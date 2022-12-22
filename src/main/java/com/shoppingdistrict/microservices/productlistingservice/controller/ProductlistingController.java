@@ -122,6 +122,28 @@ public class ProductlistingController {
 		
 	}
 	
+	@GetMapping("/articles/subcategory/{subCategory}")
+	public Articles retriveArticleBySubCategory(@PathVariable String subCategory) {
+		logger.info("Entry to retriveArticleBySubCategory");
+		
+		//	URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(savedProduct.getId())
+		//				.toUri();
+
+
+		Optional<Articles> article = articleRepository.findBySubcategory(subCategory);
+		
+		if (article.isEmpty()) {
+			logger.info("Article with given sub category {} not found", subCategory);
+			return null;
+		} else {
+			logger.info("Returning article {} and exiting from retriveArticleBySubCategory", subCategory);
+			 Articles articles = article.get();
+			 articles.getComments();
+			 return articles;
+		}
+		
+	}
+	
 	@PostMapping("/articles")
 	public ResponseEntity<Articles> createArticle(@Valid @RequestBody Articles article) {
 		logger.info("Entry to createArticle");
